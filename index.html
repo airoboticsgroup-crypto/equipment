@@ -13,9 +13,9 @@
 <script>
 const tabs=[document.querySelector('#student-tab'),document.querySelector('#admin-tab')];
 const panels=[document.querySelector('#student-panel'),document.querySelector('#admin-panel')];
-function selectTab(index){tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===index));tab.tabIndex=i===index?0:-1;panels[i].hidden=i!==index;});}
+function selectTab(index,updateUrl=true){tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===index));tab.tabIndex=i===index?0:-1;panels[i].hidden=i!==index;});if(updateUrl)history.replaceState(null,'',index===1?'#admin':'#student');}
 tabs.forEach((tab,index)=>{tab.addEventListener('click',()=>selectTab(index));tab.addEventListener('keydown',event=>{let next;if(event.key==='ArrowRight'||event.key==='ArrowLeft')next=1-index;else if(event.key==='Home')next=0;else if(event.key==='End')next=1;else return;event.preventDefault();selectTab(next);tabs[next].focus();});});
-function applyHash(){selectTab(['#admin','#admin-panel'].includes(location.hash)?1:0);}
+function applyHash(){selectTab(['#admin','#admin-panel'].includes(location.hash)?1:0,false);}
 window.addEventListener('hashchange',applyHash);
 applyHash();
 </script></body></html>
